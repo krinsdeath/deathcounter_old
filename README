@@ -1,0 +1,24 @@
+DeathCounter v0.2.0 - Count and rank your player and monster kills in Minecraft
+by krinsdeath
+
+Version 0.2.0:
+    - Finished SQLite support!
+    - Added permissions support (optional) - the flag is "deathcounter.admin" and gives access to the /deathcount reset command
+    - Reorganized the entire project. The source is very tidy now, and much more module-like. It should allow me to make new features very easily.
+
+Version 0.1.3:
+    - Hardcoded limit on number of loops displayed when typing /deathcount leaders [num]
+    - minor code cleanup
+    - Added configurable location for users.yml; should allow for symlinking to a shared memory location for more stability on large servers
+Version 0.1.2:
+    - Added /deathcount reset for admins.
+    - Added quiet_plugin field in config.yml - setting this to true will disable "You killed a [target]!" messages.
+    - Cleaned up code.
+    - More localization flags
+Version 0.1.1:
+    - Fixed a few bugs
+    - Added support for EntityDamageByProjectileEvent
+    - Players should now be tracked properly
+    - Added quiet_save field in config.yml - setting this to true will disable log messages stating that the users.yml has been updated.
+Version 0.1.0:
+    - Initial release

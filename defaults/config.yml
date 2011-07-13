@@ -1,0 +1,43 @@
+# There is really no need for Permissions support, but I will gladly enable it if you need it for whatever reason
+# Some variables can be parsed for the console logger, and are contained within <>
+# <version>         - plugin version
+# <shortname>       - plugin name
+# <fullname>        - plugin name + version
+# <author>          - my name
+settings:
+    # if permissions is set to true, players will need the flag 'deathcounter.admin' to access '/deathcount reset [player]'
+    permissions: false
+    # the time (in minutes) between full saves of the user database
+    save_interval: 30
+    # the amount of lines to display when a user types '/deathcount leaders' or '/deathcount [mob name]' without a number
+    leaderboard: 5
+    # the prepended message on log entries
+    log: '[<fullname>] '
+    # log_verbosity:
+    # 0     - Logging will be disabled
+    # 1     - Standard log messages will be output (onEnable, onDisable, errors) (default)
+    # 2     - More messages (user database saving and user creation)
+    # 3     - Absolutely everything will be logged
+    log_verbosity: 1
+    storage:
+        # Currently only YAML and SQLite will work
+        # Will add MySQL at some later date
+        type: 'YAML'
+        info:
+            # this entry is used only for YAML. you can specify your own users file name if you wish.
+            # note: if you want to specify a directory, please create it before hand, and do not supply a leading slash
+            filename: 'users.yml'
+            # The following information only applies to MySQL
+            database: 'users'
+            server: 'localhost'
+            port: 3306
+            username: 'username'
+            password: 'password'
+            
+messages:
+    header: 'Leaders -Top <num>- (<field>)'
+    first_rank: '#<rank> - <name> (<kills>)'
+    second_rank: '#<rank> - <name> (<kills>)'
+    third_rank: '#<rank> - <name> (<kills>)'
+    other_rank: '#<rank> - <name> (<kills>)'
+    own_rank: '--- #<rank> - <name> (<kills>) ---'
