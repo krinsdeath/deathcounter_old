@@ -112,7 +112,7 @@ public class Leaderboards {
 		if (rank == 1) { msg = plugin.config.getString("messages.first_rank"); }
 		if (rank == 2) { msg = plugin.config.getString("messages.second_rank"); }
 		if (rank == 3) { msg = plugin.config.getString("messages.third_rank"); }
-		if (rank >= 4) { msg = plugin.config.getString("messages.fourth_rank"); }
+		if (rank >= 4) { msg = plugin.config.getString("messages.other_rank"); }
 		if (name.equalsIgnoreCase(nm)) { msg = plugin.config.getString("messages.own_rank"); } 
 		msg = msg.replaceAll("<rank>", "" + rank);
 		msg = msg.replaceAll("<name>", "" + name);
