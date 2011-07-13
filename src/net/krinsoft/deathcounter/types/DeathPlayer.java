@@ -435,6 +435,8 @@ public class DeathPlayer implements IDatabase {
 			update = pigzombie;
 		} else if (mob.equals("player")) {
 			update = player;
+		} else if (mob.equals("total")) {
+			return;
 		}
 		try {
 			String query = "UPDATE `users` SET `" + mob + "` = " + update + " WHERE `name` = '" + name + "';";
@@ -442,12 +444,9 @@ public class DeathPlayer implements IDatabase {
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:plugins/DeathCounter/users.db");
 			Statement state = conn.createStatement();
 			int rs = state.executeUpdate(query);
-			if (rs == 0) {
-				return;
-			}
 			state.close();
 			conn.close();
-			if (plugin.config.getInt("settings.log_verbosity", 1) >= 3) {
+			if (plugin.config.getInt("settings.log_verbosity", 1) >= 3 && rs == 0) {
 				log.info(name + "'s kill count for " + mob + " has been updated to " + update);
 			}
 		} catch(ClassNotFoundException e) {
