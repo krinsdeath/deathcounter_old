@@ -41,7 +41,8 @@ public class EntityEventListener extends EntityListener {
 				if (event.getEntity() instanceof Player) { targetName = "player"; }
 				else { targetName = event.getEntity().toString().toLowerCase().replaceAll("craft", ""); }
 				plugin.players.get(source).add(source, targetName);
-				log.info(targetName + "->" + event.getEntity().toString());
+				// debugger
+				// log.info(targetName + "->" + event.getEntity().toString());
 			} else {
 				return;
 			}
@@ -59,7 +60,8 @@ public class EntityEventListener extends EntityListener {
 				if (event.getEntity() instanceof Player) { targetName = "player"; }
 				else { targetName = event.getEntity().toString().toLowerCase().replaceAll("craft", ""); }
 				plugin.players.get(source).add(source, targetName);
-				log.info(targetName + "->" + event.getEntity().toString());
+				// debugger
+				// log.info(targetName + "->" + event.getEntity().toString());
 			} else {
 				return;
 			}

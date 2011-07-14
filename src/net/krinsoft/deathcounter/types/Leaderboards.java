@@ -7,10 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.krinsoft.deathcounter.DeathCounter;
 import net.krinsoft.deathcounter.util.DeathLogger;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -71,24 +69,28 @@ public class Leaderboards {
 	public void fetchSqlite(CommandSender sender, String field, int loops) {
 		playMessage(sender, "header", field, loops);
 		String query = "";
+		int rank = 0; String name = ""; String key = "total"; int kills = 0;
 		if (field.equalsIgnoreCase("leaders")) {
 			query = "SELECT `name`, (pig + cow + sheep + chicken + squid + " +
 					"skeleton + zombie + ghast + wolf + creeper + slime + " +
 					"pigzombie + player) AS 'Total Kills' FROM `users` ORDER BY 'Total Kills' DESC LIMIT " + loops + ";";
+			field = "Total Kills";
+			key = "total";
 		} else if (plugin.monsters.contains(field)) {
 			query = "SELECT `name`, `" + field + "` FROM `users` ORDER BY `" + field + "` DESC LIMIT " + loops + ";";
+			key = field;
 		}
 		try {
 			Class.forName("org.sqlite.JDBC");
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:plugins/DeathCounter/users.db");
 			Statement state = conn.createStatement();
 			ResultSet rs = state.executeQuery(query);
-			int rank = 0; String name = ""; String key = "total"; int kills = 0;
 			while (rs.next()) {
 				rank = rs.getRow();
-				kills = rs.getInt("Total Kills");
+				kills = rs.getInt(field);
 				name = rs.getString("name");
 				playMessage(sender, rank, name, key, kills);
+				if (rs.getRow() > loops) { break; }
 			}
 			state.close();
 			conn.close();
@@ -97,7 +99,6 @@ public class Leaderboards {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		sender.sendMessage("");
 	}
 
 	public void fetchMysql(CommandSender sender, String field, int loops) {
