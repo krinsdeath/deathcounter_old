@@ -26,7 +26,7 @@ import org.bukkit.event.Event;
 public class DeathCounter extends JavaPlugin {
 	// logger
 	public final DeathLogger log = new DeathLogger(this);
-	
+
 	// configs
 	public Configuration config;
 	public Configuration users;
@@ -51,7 +51,6 @@ public class DeathCounter extends JavaPlugin {
 
 	public boolean perm;
 
-	@Override
 	public void onEnable() {
 		// initialize the instance stuff
 		plugin = this;
@@ -94,10 +93,10 @@ public class DeathCounter extends JavaPlugin {
 		monsters.add("creeper");
 		monsters.add("slime");
 		monsters.add("pigzombie");
-		monsters.add("player");	
+		monsters.add("spider");
+		monsters.add("player");
 	}
 
-	@Override
 	public void onDisable() {
 		if (config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
 			users.save();

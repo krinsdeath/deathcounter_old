@@ -29,17 +29,15 @@ public class DeathLogger {
 	}
 	
 	public void warn(String message) {
-		if (plugin.config.getInt("settings.log_verbosity", 1) > 0) {
-			if (plugin.config.getString("settings.log") != null) {
-				LOG_PREFIX = plugin.config.getString("settings.log");
-			}
-			message = LOG_PREFIX + message;
-			message = message.replaceAll("<fullname>", plugin.description.getFullName());
-			message = message.replaceAll("<shortname>", plugin.description.getName());
-			message = message.replaceAll("<version>", plugin.description.getVersion());
-			message = message.replaceAll("<author>", plugin.description.getAuthors().get(0));
-			log.warning(message);
+		if (plugin.config.getString("settings.log") != null) {
+			LOG_PREFIX = plugin.config.getString("settings.log");
 		}
+		message = LOG_PREFIX + message;
+		message = message.replaceAll("<fullname>", plugin.description.getFullName());
+		message = message.replaceAll("<shortname>", plugin.description.getName());
+		message = message.replaceAll("<version>", plugin.description.getVersion());
+		message = message.replaceAll("<author>", plugin.description.getAuthors().get(0));
+		log.warning(message);
 	}
 
 }

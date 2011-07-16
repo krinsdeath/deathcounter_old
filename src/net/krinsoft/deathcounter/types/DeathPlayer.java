@@ -141,6 +141,7 @@ public class DeathPlayer implements IDatabase {
 		creeper = plugin.users.getInt(name + ".creeper", 0);
 		slime = plugin.users.getInt(name + ".slime", 0);
 		pigzombie = plugin.users.getInt(name + ".pigzombie", 0);
+		spider = plugin.users.getInt(name + ".spider", 0);
 		// players
 		player = plugin.users.getInt(name + ".player", 0);
 		total = plugin.users.getInt(name + ".total", 0);
@@ -177,6 +178,7 @@ public class DeathPlayer implements IDatabase {
 			creeper = rs.getInt("creeper");
 			slime = rs.getInt("slime");
 			pigzombie = rs.getInt("pigzombie");
+			spider = rs.getInt("spider");
 			player = rs.getInt("player");
 			state.close();
 			conn.close();
@@ -215,6 +217,7 @@ public class DeathPlayer implements IDatabase {
 		plugin.users.setProperty(name + ".creeper", creeper);
 		plugin.users.setProperty(name + ".slime", slime);
 		plugin.users.setProperty(name + ".pigzombie", pigzombie);
+		plugin.users.setProperty(name + ".spider", spider);
 		plugin.users.setProperty(name + ".player", player);
 		plugin.users.setProperty(name + ".total", total);
 		plugin.users.save();
@@ -238,6 +241,7 @@ public class DeathPlayer implements IDatabase {
 					"`creeper` = " + creeper + "," +
 					"`slime` = " + slime + "," +
 					"`pigzombie` = " + pigzombie + "," +
+					"`spider` = " + spider + "," +
 					"`player` = " + player + " " +
 					"WHERE `name` = '" + name + "';";
 			Class.forName("org.sqlite.JDBC");
@@ -296,6 +300,7 @@ public class DeathPlayer implements IDatabase {
 		plugin.users.setProperty(name + ".creeper", 0);
 		plugin.users.setProperty(name + ".slime", 0);
 		plugin.users.setProperty(name + ".pigzombie", 0);
+		plugin.users.setProperty(name + ".spider", 0);
 		plugin.users.setProperty(name + ".player", 0);
 		plugin.users.setProperty(name + ".total", 0);
 		plugin.users.save();
