@@ -9,6 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.iConomy.iConomy;
+import com.iConomy.system.Holdings;
+
 import net.krinsoft.deathcounter.DeathCounter;
 import net.krinsoft.deathcounter.interfaces.IDatabase;
 import net.krinsoft.deathcounter.util.DeathLogger;
@@ -113,6 +116,11 @@ public class DeathPlayer implements IDatabase {
 		}
 		total++;
 		update("total");
+		if (plugin.ico) {
+			Holdings balance = iConomy.getAccount(name).getHoldings();
+			double update = Double.parseDouble(plugin.config.getString("iConomy." + mob, "0.0"));
+			balance.add(update);
+		}
 		plugin.players.put(ply, this);
 	}
 	
@@ -248,7 +256,7 @@ public class DeathPlayer implements IDatabase {
 			Connection conn = DriverManager.getConnection("jdbc:sqlite:plugins/DeathCounter/users.db");
 			Statement state = conn.createStatement();
 			int rs = state.executeUpdate(query);
-			if (rs == 0) {
+			if (rs == 1) {
 				if (plugin.config.getInt("settings.log_verbosity", 1) >= 3) {
 					log.info("player " + name + " saved successfully");
 				}
@@ -303,7 +311,6 @@ public class DeathPlayer implements IDatabase {
 		plugin.users.setProperty(name + ".spider", 0);
 		plugin.users.setProperty(name + ".player", 0);
 		plugin.users.setProperty(name + ".total", 0);
-		plugin.users.save();
 		if (plugin.config.getInt("settings.log_verbosity", 1) >= 2) {
 			log.info("player " + name + " created");
 		}
@@ -353,9 +360,9 @@ public class DeathPlayer implements IDatabase {
 		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
 			updateYaml(mob);
 		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
-			updateSqlite(mob);
+			// updateSqlite(mob);
 		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
-			updateMysql(mob);
+			// updateMysql(mob);
 		}
 	}
 	
@@ -405,10 +412,8 @@ public class DeathPlayer implements IDatabase {
 	}
 	
 	/**
-	 * update this user's entry in the SQLite database
+	 * @deprecated as of 0.2.2, this method is not used
 	 * 
-	 * @param mob
-	 * the mob name to update
 	 */
 	public void updateSqlite(String mob) {
 		int update = 0;
@@ -440,8 +445,6 @@ public class DeathPlayer implements IDatabase {
 			update = pigzombie;
 		} else if (mob.equals("player")) {
 			update = player;
-		} else if (mob.equals("total")) {
-			return;
 		}
 		try {
 			String query = "UPDATE `users` SET `" + mob + "` = " + update + " WHERE `name` = '" + name + "';";
@@ -462,14 +465,16 @@ public class DeathPlayer implements IDatabase {
 	}
 	
 	/**
-	 * update this user's entry in the MySQL database
+	 * @deprecated as of 0.2.2, this method is not used
 	 * 
-	 * @param mob
-	 * the mob name to update
 	 */
 	public void updateMysql(String mob) {
 		// TODO Auto-generated method stub
 		// TODO Implement MySQL
 		
+	}
+	
+	public String toString() {
+		return "net.krinsoft.deathcounter.types.DeathPlayer@" + name;
 	}
 }

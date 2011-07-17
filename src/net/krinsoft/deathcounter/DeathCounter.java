@@ -10,6 +10,7 @@ import com.nijiko.permissions.PermissionHandler;
 import net.krinsoft.deathcounter.listeners.CommandListener;
 import net.krinsoft.deathcounter.listeners.EntityEventListener;
 import net.krinsoft.deathcounter.listeners.PlayerEventListener;
+import net.krinsoft.deathcounter.listeners.ServerEventListener;
 import net.krinsoft.deathcounter.types.DeathPlayer;
 import net.krinsoft.deathcounter.types.Leaderboards;
 import net.krinsoft.deathcounter.util.DeathLogger;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import com.iConomy.*;
 
 public class DeathCounter extends JavaPlugin {
 	// logger
@@ -36,10 +38,12 @@ public class DeathCounter extends JavaPlugin {
 	public final EntityEventListener eListener = new EntityEventListener(this);
 	public final PlayerEventListener pListener = new PlayerEventListener(this);
 	public final CommandListener cListener = new CommandListener(this);
+	public final ServerEventListener sListener = new ServerEventListener(this);
 	
 	// instance variables
 	public HashMap<Player, DeathPlayer> players = new HashMap<Player, DeathPlayer>();
 	public PermissionHandler permissions;
+	public iConomy iConomy = null;
 	public PluginDescriptionFile description;
 	public PluginManager manager;
 	public Plugin plugin;
@@ -50,6 +54,7 @@ public class DeathCounter extends JavaPlugin {
 	public List<String> monsters = new ArrayList<String>();
 
 	public boolean perm;
+	public boolean ico;
 
 	public void onEnable() {
 		// initialize the instance stuff
@@ -61,6 +66,10 @@ public class DeathCounter extends JavaPlugin {
 		new Settings(this);
 		leaders = new Leaderboards(this);
 		
+		// iConomy support stuff
+		manager.registerEvent(Event.Type.PLUGIN_ENABLE, sListener, Event.Priority.Monitor, this);
+		manager.registerEvent(Event.Type.PLUGIN_DISABLE, sListener, Event.Priority.Monitor, this);
+		
 		// First up, we have... EntityListener!
 		manager.registerEvent(Event.Type.ENTITY_DEATH, eListener, Event.Priority.Normal, this);
 		
@@ -71,8 +80,10 @@ public class DeathCounter extends JavaPlugin {
 		// And lastly, Command Listener!
 		getCommand("deathcount").setExecutor(cListener);
 		
-		long n = config.getInt("settings.timer_interval", 30) * 60000; // Multiply the value in the config by 60000 ms, or 60 seconds
+		long n = config.getInt("settings.save_interval", 30) * 60000; // Multiply the value in the config by 60000 ms, or 60 seconds
 		timer.schedule(new DeathTimer(this), n, n);
+		log.info("save interval of " + config.getInt("settings.save_interval", 30) + " activated");
+		log.info("log verbosity set to " + config.getInt("settings.log_verbosity", 1));
 		
 		initMonsters();
 		
@@ -102,7 +113,9 @@ public class DeathCounter extends JavaPlugin {
 			users.save();
 		} else if (config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
 			for (Player player : this.getServer().getOnlinePlayers()) {
-				players.get(player).save();
+				if (players.get(player) != null) {
+					players.get(player).save();
+				}
 			}
 		} else if (config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
 			
