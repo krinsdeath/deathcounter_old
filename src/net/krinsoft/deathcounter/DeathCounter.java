@@ -82,9 +82,7 @@ public class DeathCounter extends JavaPlugin {
 		
 		long n = config.getInt("settings.save_interval", 30) * 60000; // Multiply the value in the config by 60000 ms, or 60 seconds
 		timer.schedule(new DeathTimer(this), n, n);
-		log.info("save interval of " + config.getInt("settings.save_interval", 30) + " activated");
-		log.info("log verbosity set to " + config.getInt("settings.log_verbosity", 1));
-		
+
 		initMonsters();
 		
 		// report that we finished with the enable
