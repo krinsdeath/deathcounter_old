@@ -16,7 +16,7 @@ settings:
     # the prepended message on log entries
     log: '[<fullname>] '
     # log_verbosity:
-    # 0     - Logging will be disabled
+    # 0     - Logging will be disabled for everything but errors
     # 1     - Standard log messages will be output (onEnable, onDisable, errors) (default)
     # 2     - More messages (user database saving and user creation)
     # 3     - Absolutely everything will be logged

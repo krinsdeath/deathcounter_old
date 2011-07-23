@@ -73,7 +73,8 @@ public class Leaderboards {
 		if (field.equalsIgnoreCase("leaders")) {
 			query = "SELECT `name`, (pig + cow + sheep + chicken + squid + " +
 					"skeleton + zombie + ghast + wolf + creeper + slime + " +
-					"pigzombie + player) AS 'Total Kills' FROM `users` ORDER BY 'Total Kills' DESC LIMIT " + loops + ";";
+					"pigzombie + player) AS 'Total Kills' FROM `users` " +
+					"ORDER BY 'Total Kills' DESC LIMIT " + loops + ";";
 			field = "Total Kills";
 			key = "total";
 		} else if (plugin.monsters.contains(field)) {
@@ -110,11 +111,13 @@ public class Leaderboards {
 		String nm = "";
 		if (sender instanceof Player) { nm = ((Player)sender).getName(); } 
 		String msg = "#<rank> - <name> (<kills>)";
-		if (rank == 1) { msg = plugin.config.getString("messages.first_rank"); }
-		if (rank == 2) { msg = plugin.config.getString("messages.second_rank"); }
-		if (rank == 3) { msg = plugin.config.getString("messages.third_rank"); }
-		if (rank >= 4) { msg = plugin.config.getString("messages.other_rank"); }
-		if (name.equalsIgnoreCase(nm)) { msg = plugin.config.getString("messages.own_rank"); } 
+		if (rank == 1) { msg = plugin.config.getString("messages.first_rank", "#<rank> - <name> (<kills>)"); }
+		if (rank == 2) { msg = plugin.config.getString("messages.second_rank", "#<rank> - <name> (<kills>)"); }
+		if (rank == 3) { msg = plugin.config.getString("messages.third_rank", "#<rank> - <name> (<kills>)"); }
+		if (rank >= 4) { msg = plugin.config.getString("messages.other_rank", "#<rank> - <name> (<kills>)"); }
+		if (name.equalsIgnoreCase(nm)) {
+			msg = plugin.config.getString("messages.own_rank", "---#<rank> - <name> (<kills>)---");
+		} 
 		msg = msg.replaceAll("<rank>", "" + rank);
 		msg = msg.replaceAll("<name>", "" + name);
 		msg = msg.replaceAll("<field>", "" + key);
@@ -125,7 +128,7 @@ public class Leaderboards {
 	
 	// header message
 	private void playMessage(CommandSender sender, String key, String field, int loops) {
-		String msg = plugin.config.getString("messages.header");
+		String msg = plugin.config.getString("messages.header", "Leaders -Top <num>- (<field>)");
 		msg = msg.replaceAll("<field>", field);
 		msg = msg.replaceAll("<num>", "" + loops);
 		msg = msg.replaceAll("&([0-9A-F])", "\u00A7$1");
@@ -148,7 +151,7 @@ public class Leaderboards {
 			while (rs.next()) {
 				String query2 = "DELETE FROM `users` WHERE `name = '" + name + "';";
 				int rs1 = state.executeUpdate(query2);
-				if (plugin.config.getInt("settings.log_verbosity", 1) >= 2 && rs1 == 0) {
+				if (plugin.config.getInt("settings.log_verbosity", 1) >= 2 && rs1 == 1) {
 					log.info("player " + name + " has been deleted");
 				}
 			}

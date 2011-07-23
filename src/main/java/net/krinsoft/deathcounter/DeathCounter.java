@@ -3,9 +3,8 @@ package net.krinsoft.deathcounter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-
 import com.nijiko.permissions.PermissionHandler;
+import com.iConomy.*;
 
 import net.krinsoft.deathcounter.listeners.CommandListener;
 import net.krinsoft.deathcounter.listeners.EntityEventListener;
@@ -23,7 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import com.iConomy.*;
 
 public class DeathCounter extends JavaPlugin {
 	// logger
@@ -48,9 +46,6 @@ public class DeathCounter extends JavaPlugin {
 	public PluginManager manager;
 	public Plugin plugin;
 	
-	// static stuff
-	public static Timer timer = new Timer(true);
-	
 	public List<String> monsters = new ArrayList<String>();
 
 	public boolean perm;
@@ -61,6 +56,7 @@ public class DeathCounter extends JavaPlugin {
 		plugin = this;
 		description = this.getDescription();
 		manager = this.getServer().getPluginManager();
+		log.setLogger(this.getServer().getLogger());
 		
 		// initialize the configuration
 		new Settings(this);
@@ -81,7 +77,7 @@ public class DeathCounter extends JavaPlugin {
 		getCommand("deathcount").setExecutor(cListener);
 		
 		long n = config.getInt("settings.save_interval", 30) * 60000; // Multiply the value in the config by 60000 ms, or 60 seconds
-		timer.schedule(new DeathTimer(this), n, n);
+		this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new DeathTimer(this), n, n);
 
 		initMonsters();
 		
@@ -107,18 +103,18 @@ public class DeathCounter extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		if (config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
+		if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			users.save();
-		} else if (config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			for (Player player : this.getServer().getOnlinePlayers()) {
 				if (players.get(player) != null) {
 					players.get(player).save();
 				}
 			}
-		} else if (config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+		} else if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			
 		}
-		timer.cancel();
+		this.getServer().getScheduler().cancelTasks(this);
 		log.info("disabled");
 	}
 	

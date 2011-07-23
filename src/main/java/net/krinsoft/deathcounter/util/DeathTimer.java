@@ -1,19 +1,16 @@
 package net.krinsoft.deathcounter.util;
 
-import java.util.TimerTask;
-
 import net.krinsoft.deathcounter.DeathCounter;
 
 import org.bukkit.entity.Player;
 
-public class DeathTimer extends TimerTask {
-	public DeathCounter plugin;
+public class DeathTimer implements Runnable {
+	private DeathCounter plugin;
 	
 	public DeathTimer(DeathCounter instance) {
 		plugin = instance;
 	}
 	
-	@Override
 	public void run() {
 		saveAll();
 	}

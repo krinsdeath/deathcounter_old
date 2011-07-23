@@ -17,10 +17,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.config.Configuration;
 
 public class Settings {
-	public DeathCounter plugin;
-	public DeathLogger log;
+	private DeathCounter plugin;
+	private DeathLogger log;
 	
-	public File dataFolder;
+	private File dataFolder;
 	
 	public Settings(DeathCounter instance) {
 		plugin = instance;
@@ -38,12 +38,16 @@ public class Settings {
 		plugin.config = new Configuration(config);
 		plugin.config.load();
 		
-		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
-			plugin.users = new Configuration(new File(dataFolder, plugin.config.getString("settings.storage.info.filename")));
+		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
+			plugin.users = new Configuration(new File(dataFolder, plugin.config.getString("settings.storage.info.filename", "users.yml")));
 			plugin.users.load();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			makeDefaultSqliteDatabase();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+			if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
+				plugin.users = new Configuration(new File(dataFolder, plugin.config.getString("settings.storage.info.filename", "users.yml")));
+				plugin.users.load();
+			}
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			// TODO Implement MySQL
 		}
 		if (plugin.config.getBoolean("settings.permissions", false)) {

@@ -125,11 +125,11 @@ public class DeathPlayer implements IDatabase {
 	}
 	
 	public void load() {
-		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
+		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			loadYaml();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			loadSqlite();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			loadMysql();
 		}
 	}
@@ -203,11 +203,11 @@ public class DeathPlayer implements IDatabase {
 	}
 
 	public void save() {
-		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
+		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			saveYaml();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			saveSqlite();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			saveMysql();
 		}
 	}
@@ -282,11 +282,11 @@ public class DeathPlayer implements IDatabase {
 	 * uses a default entry
 	 */
 	public void insert() {
-		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
+		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			insertYaml();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			insertSqlite();
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			insertMysql();
 		}
 	}
@@ -357,11 +357,11 @@ public class DeathPlayer implements IDatabase {
 	 * the mob name to update
 	 */
 	public void update(String mob) {
-		if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("yaml")) {
+		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			updateYaml(mob);
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("sqlite")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
 			// updateSqlite(mob);
-		} else if (plugin.config.getString("settings.storage.type").equalsIgnoreCase("mysql")) {
+		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			// updateMysql(mob);
 		}
 	}
@@ -475,6 +475,6 @@ public class DeathPlayer implements IDatabase {
 	}
 	
 	public String toString() {
-		return "net.krinsoft.deathcounter.types.DeathPlayer@" + name;
+		return "DeathPlayer{name=" + name + "}";
 	}
 }

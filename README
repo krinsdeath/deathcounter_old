@@ -1,6 +1,12 @@
-DeathCounter v0.2.2 - Count and rank your player and monster kills in Minecraft
+DeathCounter v0.3.0 - Count and rank your player and monster kills in Minecraft
 by krinsdeath
 
+Version 0.3.0:
+    - Converted to Superperms
+    - Optimized code
+    - Fixed possible nullpointers with default values
+    - Added aliases for /deathcount - /dc and /deathcounter
+    - Converted to maven
 Version 0.2.2:
     - Added iConomy support! (optional)
     - As a result of iConomy, the config file changed. A new flag (settings.iConomy: boolean true|false) has been added as well as a group of keys in iConomy.[mobname]: double

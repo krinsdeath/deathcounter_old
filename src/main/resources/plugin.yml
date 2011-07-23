@@ -1,0 +1,29 @@
+name: DeathCounter
+main: net.krinsoft.deathcounter.DeathCounter
+version: 0.3.0
+authors: [krinsdeath]
+depend: []
+
+commands:
+    deathcount:
+        aliases: [deathcounter, dc]
+        description: Displays the Leaderboards in DeathCounter
+        usage: |
+            /<command>                - display this message
+            /<command> leaders [num]  - display the leaderboards for total kills
+            /<command> [mob] [num]    - display the specified number of leaders for the specified monster
+            /<command> reset [player] - reset the specified player to 0 for all stats
+            
+permissions:
+    deathcounter.admin:
+        description: 'Gives access to /deathcount reset [player]'
+        default: op
+    deathcounter.users:
+        description: 'Gives access to /deathcount leaders AND /deathcounter [mobname]'
+        default: true
+    deathcounter.*:
+        description: 'Gives access to everything.'
+        default: false
+        children:
+            deathcounter.admin: true
+            deathcounter.users: true
