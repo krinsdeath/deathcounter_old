@@ -3,8 +3,8 @@ package net.krinsoft.deathcounter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.nijiko.permissions.PermissionHandler;
-import com.iConomy.*;
+
+import com.nijikokun.register.payment.Method;
 
 import net.krinsoft.deathcounter.listeners.CommandListener;
 import net.krinsoft.deathcounter.listeners.EntityEventListener;
@@ -31,35 +31,35 @@ public class DeathCounter extends JavaPlugin {
 	public Configuration config;
 	public Configuration users;
 	public Leaderboards leaders;
+	public Settings settings;
 	
 	// listeners
-	public final EntityEventListener eListener = new EntityEventListener(this);
-	public final PlayerEventListener pListener = new PlayerEventListener(this);
-	public final CommandListener cListener = new CommandListener(this);
-	public final ServerEventListener sListener = new ServerEventListener(this);
+	private final EntityEventListener eListener = new EntityEventListener(this);
+	private final PlayerEventListener pListener = new PlayerEventListener(this);
+	private final CommandListener cListener = new CommandListener(this);
+	private final ServerEventListener sListener = new ServerEventListener(this);
 	
 	// instance variables
 	public HashMap<Player, DeathPlayer> players = new HashMap<Player, DeathPlayer>();
-	public PermissionHandler permissions;
-	public iConomy iConomy = null;
-	public PluginDescriptionFile description;
-	public PluginManager manager;
-	public Plugin plugin;
+	public Method method = null;
+	protected PluginDescriptionFile description;
+	protected PluginManager manager;
+	protected Plugin plugin;
 	
 	public List<String> monsters = new ArrayList<String>();
 
 	public boolean perm;
-	public boolean ico;
+	public boolean eco;
 
+	@Override
 	public void onEnable() {
 		// initialize the instance stuff
 		plugin = this;
 		description = this.getDescription();
 		manager = this.getServer().getPluginManager();
-		log.setLogger(this.getServer().getLogger());
 		
 		// initialize the configuration
-		new Settings(this);
+		settings = new Settings(this);
 		leaders = new Leaderboards(this);
 		
 		// iConomy support stuff
@@ -82,26 +82,10 @@ public class DeathCounter extends JavaPlugin {
 		initMonsters();
 		
 		// report that we finished with the enable
-		log.info("enabled");
-	}
-	
-	private void initMonsters() {
-		monsters.add("pig");
-		monsters.add("cow");
-		monsters.add("sheep");
-		monsters.add("squid");
-		monsters.add("chicken");
-		monsters.add("skeleton");
-		monsters.add("zombie");
-		monsters.add("ghast");
-		monsters.add("wolf");
-		monsters.add("creeper");
-		monsters.add("slime");
-		monsters.add("pigzombie");
-		monsters.add("spider");
-		monsters.add("player");
+		log.info(info("fullname") + " by " + info("authors") + " enabled!");
 	}
 
+	@Override
 	public void onDisable() {
 		if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			users.save();
@@ -120,6 +104,39 @@ public class DeathCounter extends JavaPlugin {
 	
 	/**
 	 * Unique methods to this class
-	 */	
+	 */
 
+	public String info(String field) {
+		if (field.equalsIgnoreCase("name")) {
+			return description.getName();
+		}
+		if (field.equalsIgnoreCase("fullname")) {
+			return description.getFullName();
+		}
+		if (field.equalsIgnoreCase("version")) {
+			return description.getVersion();
+		}
+		if (field.equalsIgnoreCase("authors")) {
+			return description.getAuthors().toString();
+		}
+		return description.getName();
+	}
+
+
+	private void initMonsters() {
+		monsters.add("pig");
+		monsters.add("cow");
+		monsters.add("sheep");
+		monsters.add("squid");
+		monsters.add("chicken");
+		monsters.add("skeleton");
+		monsters.add("zombie");
+		monsters.add("ghast");
+		monsters.add("wolf");
+		monsters.add("creeper");
+		monsters.add("slime");
+		monsters.add("pigzombie");
+		monsters.add("spider");
+		monsters.add("player");
+	}
 }

@@ -1,6 +1,6 @@
 name: DeathCounter
 main: net.krinsoft.deathcounter.DeathCounter
-version: 0.3.0
+version: ${project.version}
 authors: [krinsdeath]
 depend: []
 

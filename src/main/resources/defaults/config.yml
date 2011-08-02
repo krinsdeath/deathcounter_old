@@ -8,7 +8,7 @@ settings:
     # if permissions is set to true, players will need the flag 'deathcounter.admin' to access '/deathcount reset [player]'
     permissions: false
     # if iConomy is set to true, players will earn money for each kill based on the values in this config
-    iConomy: false
+    economy: false
     # the time (in minutes) between full saves of the user database
     save_interval: 30
     # the amount of lines to display when a user types '/deathcount leaders' or '/deathcount [mob name]' without a number
@@ -36,7 +36,7 @@ settings:
             username: 'username'
             password: 'password'
             
-iConomy:
+economy:
     pig: 0.0
     sheep: 0.0
     cow: 0.0

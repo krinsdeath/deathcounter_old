@@ -1,7 +1,5 @@
 package net.krinsoft.deathcounter;
 
-import com.nijikokun.bukkit.Permissions.Permissions;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,12 +11,11 @@ import java.sql.Statement;
 
 import net.krinsoft.deathcounter.util.DeathLogger;
 
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.config.Configuration;
 
-public class Settings {
-	private DeathCounter plugin;
-	private DeathLogger log;
+public final class Settings {
+	private final DeathCounter plugin;
+	private final DeathLogger log;
 	
 	private File dataFolder;
 	
@@ -50,24 +47,7 @@ public class Settings {
 		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
 			// TODO Implement MySQL
 		}
-		if (plugin.config.getBoolean("settings.permissions", false)) {
-			plugin.perm = setupPermissions();
-		}
-	}
-
-	private boolean setupPermissions() {
-		Plugin permPlugin = plugin.getServer().getPluginManager().getPlugin("Permissions");
-		if (plugin.permissions == null) {
-			if (permPlugin != null) {
-				plugin.permissions = ((Permissions) permPlugin).getHandler();
-				log.info("Permissions found.");
-				return true;
-			} else {
-				log.warn("Permissions not found.");
-				return false;
-			}
-		}
-		return false;
+		plugin.eco = plugin.config.getBoolean("settings.economy", false);
 	}
 
 	private void makeDefaultSqliteDatabase() {
@@ -93,14 +73,13 @@ public class Settings {
 								" player INTEGER DEFAULT 0," +
 								" PRIMARY KEY(id DESC));";
 			Statement state = conn.createStatement();
-			@SuppressWarnings("unused")
-			int rs = state.executeUpdate(initQuery);
+			state.executeUpdate(initQuery);
 		} catch (ClassNotFoundException e) {
 			log.warn("SQLite JDBC Driver not found. Defaulting to YAML.");
+			log.warn("Error: " + e);
 			plugin.config.setProperty("settings.storage.type", "yaml");
-			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.warn("Error: " + e);
 		}
 	}
 

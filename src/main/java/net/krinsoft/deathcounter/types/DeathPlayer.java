@@ -3,14 +3,12 @@ package net.krinsoft.deathcounter.types;
  * @author krinsdeath
  * 
  */
+import com.nijikokun.register.payment.Method.MethodAccount;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import com.iConomy.iConomy;
-import com.iConomy.system.Holdings;
 
 import net.krinsoft.deathcounter.DeathCounter;
 import net.krinsoft.deathcounter.interfaces.IDatabase;
@@ -30,7 +28,7 @@ public class DeathPlayer implements IDatabase {
 	public int pig;
 	public int squid;
 	public int chicken;
-	public int sheep; // currently bugged, craftbukkit doesn't fire ENTITY_DEATH when sheep die
+	public int sheep;
 	
 	// monsters
 	public int skeleton;
@@ -116,15 +114,15 @@ public class DeathPlayer implements IDatabase {
 		}
 		total++;
 		update("total");
-		if (plugin.ico) {
-			Holdings balance = iConomy.getAccount(name).getHoldings();
-			double update = Double.parseDouble(plugin.config.getString("iConomy." + mob, "0.0"));
+		if (plugin.eco) {
+			MethodAccount balance = plugin.method.getAccount(name);
+			double update = Double.parseDouble(plugin.config.getString("economy." + mob, "0.0"));
 			balance.add(update);
 		}
 		plugin.players.put(ply, this);
 	}
 	
-	public void load() {
+	public final void load() {
 		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			loadYaml();
 		} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
@@ -191,10 +189,12 @@ public class DeathPlayer implements IDatabase {
 			state.close();
 			conn.close();
 			log.info("player " + name + " loaded");
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			log.warn("SQLite JDBC Driver not found. Defaulting to YAML.");
+			log.warn("Error: " + e);
+			plugin.config.setProperty("settings.storage.type", "yaml");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.warn("Error: " + e);
 		}
 	}
 
@@ -264,9 +264,11 @@ public class DeathPlayer implements IDatabase {
 			state.close();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			log.warn("SQLite JDBC Driver not found. Defaulting to YAML.");
+			log.warn("Error: " + e);
+			plugin.config.setProperty("settings.storage.type", "yaml");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.warn("Error: " + e);
 		}
 	}
 
@@ -333,10 +335,12 @@ public class DeathPlayer implements IDatabase {
 			}
 			state.close();
 			conn.close();
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			log.warn("SQLite JDBC Driver not found. Defaulting to YAML.");
+			log.warn("Error: " + e);
+			plugin.config.setProperty("settings.storage.type", "yaml");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.warn("Error: " + e);
 		}
 	}
 
@@ -457,10 +461,12 @@ public class DeathPlayer implements IDatabase {
 			if (plugin.config.getInt("settings.log_verbosity", 1) >= 3 && rs == 0) {
 				log.info(name + "'s kill count for " + mob + " has been updated to " + update);
 			}
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			log.warn("SQLite JDBC Driver not found. Defaulting to YAML.");
+			log.warn("Error: " + e);
+			plugin.config.setProperty("settings.storage.type", "yaml");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.warn("Error: " + e);
 		}
 	}
 	
