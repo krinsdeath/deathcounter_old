@@ -1,6 +1,6 @@
 package net.krinsoft.deathcounter.listeners;
 
-import com.nijikokun.register.payment.Methods;
+import net.krinsoft.register.payment.Methods;
 
 import net.krinsoft.deathcounter.DeathCounter;
 import net.krinsoft.deathcounter.util.DeathLogger;

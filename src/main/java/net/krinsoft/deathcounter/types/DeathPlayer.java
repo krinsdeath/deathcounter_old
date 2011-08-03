@@ -3,7 +3,7 @@ package net.krinsoft.deathcounter.types;
  * @author krinsdeath
  * 
  */
-import com.nijikokun.register.payment.Method.MethodAccount;
+import net.krinsoft.register.payment.Method.MethodAccount;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

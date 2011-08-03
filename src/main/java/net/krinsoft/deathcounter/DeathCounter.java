@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.nijikokun.register.payment.Method;
+import net.krinsoft.register.payment.Method;
 
 import net.krinsoft.deathcounter.listeners.CommandListener;
 import net.krinsoft.deathcounter.listeners.EntityEventListener;

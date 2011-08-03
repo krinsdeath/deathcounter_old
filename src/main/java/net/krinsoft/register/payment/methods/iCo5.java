@@ -1,4 +1,4 @@
-package com.nijikokun.register.payment.methods;
+package net.krinsoft.register.payment.methods;
 
 import com.iConomy.iConomy;
 import com.iConomy.system.Account;
@@ -6,7 +6,7 @@ import com.iConomy.system.BankAccount;
 import com.iConomy.system.Holdings;
 import com.iConomy.util.Constants;
 
-import com.nijikokun.register.payment.Method;
+import net.krinsoft.register.payment.Method;
 
 import org.bukkit.plugin.Plugin;
 

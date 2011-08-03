@@ -4,6 +4,10 @@ Count and rank your player and monster kills in Minecraft, and use a convenient 
 
 *   by **krinsdeath**
 
+Version 0.3.2
+---
+*   Refactored Register to prevent conflicts
+
 Version 0.3.1
 ---
 *   Switched from iConomy to register; all major economies will now work, including Essentials Economy, iConomy 4 & 5, BOSEconomy 6 and 7, and Multi-currency

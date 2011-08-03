@@ -1,4 +1,4 @@
-package com.nijikokun.register.payment;
+package net.krinsoft.register.payment;
 
 import org.bukkit.plugin.Plugin;
 
