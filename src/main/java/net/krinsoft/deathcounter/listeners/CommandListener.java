@@ -49,35 +49,38 @@ public class CommandListener implements CommandExecutor {
 				if (args.length < 2) {
 					// Invalid number of arguments
 					sender.sendMessage(ChatColor.RED + "Invalid number of arguments.");
+
 				} else if (!sender.hasPermission("deathcounter.admins")) {
 					// Player doesn't have permission for 'reset'
 					sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
+
 				} else {
 					Player player = plugin.getServer().getPlayer(args[1]);
 					if (player == null || !player.getName().equalsIgnoreCase(args[1])) {
 						// unable to find exact player name online	
 						sender.sendMessage(ChatColor.RED + "Player " + args[1] + " was not found. You must enter an online player's name exactly.");
+
 					} else {
+						// found player, let's delete him
 						plugin.leaders.delete(player.getName());
 						sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + "'s counter was reset.");
+
 					}
+
 				}
-
 				return true;
-			}
 
+			}
 			if (!args[0].matches("@.+") && !plugin.monsters.contains(args[0].toLowerCase())) {
 				// The specified argument had no handler
 				sender.sendMessage(ChatColor.RED + "An option for " + args[0] + " could not be found.");
 				return true;
 			}
-
 			// got a monster!
-			field = args[0].toLowerCase();
+			field = args[0];
 		}
-
+		// let's find the stats!
 		plugin.leaders.fetch(sender, field, loops);
-
 		return true;
 	}
 }

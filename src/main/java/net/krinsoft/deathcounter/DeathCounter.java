@@ -87,19 +87,24 @@ public class DeathCounter extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
+		String storage = config.getString("settings.storage.type", "yaml");
+		if (storage.equalsIgnoreCase("yaml")) {
 			users.save();
-		} else if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
+		} else if (storage.equalsIgnoreCase("sqlite")) {
 			for (Player player : this.getServer().getOnlinePlayers()) {
 				if (players.get(player) != null) {
 					players.get(player).save();
 				}
 			}
-		} else if (config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
-			
+		} else if (storage.equalsIgnoreCase("mysql")) {
 		}
 		this.getServer().getScheduler().cancelTasks(this);
 		log.info("disabled");
+		players = null;
+		monsters = null;
+		settings = null;
+		leaders = null;
+		plugin = null;
 	}
 	
 	/**

@@ -121,7 +121,8 @@ public class DeathPlayer implements IDatabase {
 		}
 		plugin.players.put(ply, this);
 	}
-	
+
+	@Override
 	public final void load() {
 		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			loadYaml();
@@ -202,6 +203,7 @@ public class DeathPlayer implements IDatabase {
 		
 	}
 
+	@Override
 	public void save() {
 		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			saveYaml();
@@ -283,6 +285,7 @@ public class DeathPlayer implements IDatabase {
 	 * 
 	 * uses a default entry
 	 */
+	@Override
 	public void insert() {
 		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			insertYaml();
@@ -360,6 +363,7 @@ public class DeathPlayer implements IDatabase {
 	 * @param mob
 	 * the mob name to update
 	 */
+	@Override
 	public void update(String mob) {
 		if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
 			updateYaml(mob);
@@ -479,7 +483,8 @@ public class DeathPlayer implements IDatabase {
 		// TODO Implement MySQL
 		
 	}
-	
+
+	@Override
 	public String toString() {
 		return "DeathPlayer{name=" + name + "}";
 	}

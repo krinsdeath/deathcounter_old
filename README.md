@@ -1,8 +1,13 @@
-DeathCounter v0.3.0
+DeathCounter v0.4
 ===
 Count and rank your player and monster kills in Minecraft, and use a convenient command (*/deathcount* or */dc*) to display leaders.
 
 *   by **krinsdeath**
+
+Version 0.4
+---
+*   Merged pull request from @ltguide
+*   Made *\@name* searching case-insensitive, both in YAML and SQLite
 
 Version 0.3.2
 ---
@@ -20,16 +25,4 @@ Version 0.3.0
 *   Fixed possible nullpointers with default values
 *   Added aliases for /deathcount - /dc and /deathcounter
 *   Converted to maven
-
-Version 0.2.2
----
-*   Added iConomy support! (optional)
-*   As a result of iConomy, the config file changed. A new flag (settings.iConomy: boolean true|false) has been added as well as a group of keys in iConomy.[mobname]: double
-*   Changed it so that SQLite doesn't update the DB as every kill is made. Instead, it uses save_interval in the config.yml to determine when to update all current records in the DB with new values. This should lessen File I/O, and increase performance on large servers drastically.
-
-Version 0.2.0
----
-*   Finished SQLite support!
-*   Added permissions support (optional) - the flag is "deathcounter.admin" and gives access to the /deathcount reset command
-*    Reorganized the entire project. The source is very tidy now, and much more module-like. It should allow me to make new features very easily.
 

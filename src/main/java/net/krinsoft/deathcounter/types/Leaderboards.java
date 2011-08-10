@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import net.krinsoft.deathcounter.DeathCounter;
 import net.krinsoft.deathcounter.util.DeathLogger;
@@ -44,13 +45,14 @@ public class Leaderboards {
 	}
 
 	private void fetchYaml(CommandSender sender, String field, int loops) {
-		if (field.equalsIgnoreCase("total") || plugin.monsters.contains(field)) {
+		String f = field.toLowerCase();
+		if (field.equalsIgnoreCase("total") || plugin.monsters.contains(f)) {
 			LinkedList<String> names = new LinkedList<String>();
 			LinkedList<Integer> counts = new LinkedList<Integer>();
 
 			int minCount = 0;
 			for (String key : plugin.users.getKeys()) {
-				int count = plugin.users.getInt(key + "." + field, 0);
+				int count = plugin.users.getInt(key + "." + f, 0);
 
 				// has kills and (more kills than the lowest or there's room for a tie) 
 				if (count > 0 && (count > minCount || (count == minCount && counts.size() < loops))) {
@@ -75,8 +77,7 @@ public class Leaderboards {
 				playMessage(sender, getMessageRanks(sender, i + 1, names.get(i), field, counts.get(i)));
 			}
 		} else {
-			String name = field.substring(1);
-
+			String name = Pattern.compile(".+((?i)" + field.substring(1) + ").+").matcher(plugin.users.getKeys().toString()).replaceAll("$1");
 			ConfigurationNode node = plugin.users.getNode(name);
 			if (node == null) {
 				// no user found
@@ -104,26 +105,24 @@ public class Leaderboards {
 
 			if (field.equalsIgnoreCase("total") || plugin.monsters.contains(field)) {
 				if (field.equalsIgnoreCase("total")) {
+					// build the 'total' list
 					for (String mob : plugin.monsters) {
 						column += " + `" + mob + "`";
 					}
-
 					column = "(" + column.substring(3) + ")";
 				} else {
 					column = "`" + field + "`";
 				}
-
 				rs = state.executeQuery("SELECT `name`, " + column + " AS '" + field + "' FROM `users` ORDER BY `" + field + "` DESC LIMIT " + loops + ";");
-
 				while (rs.next()) {
 					playMessage(sender, getMessageRanks(sender, rs.getRow(), rs.getString("name"), field, rs.getInt(field)));
 				}
 			} else {
+				String name = field.substring(1).replaceAll("[\\.\\\\/\\'\"]", "");
 				for (String mob : plugin.monsters) {
 					column += ", `" + mob + "`";
 				}
-				rs = state.executeQuery("SELECT `name`" + column + " FROM `users` WHERE `name` = '" + field.substring(1) + "';");
-
+				rs = state.executeQuery("SELECT `name`" + column + " FROM `users` WHERE `name` LIKE '" + field.substring(1) + "';");
 				String msg = null;
 				if (rs.next()) {
 					for (String mob : plugin.monsters) {
