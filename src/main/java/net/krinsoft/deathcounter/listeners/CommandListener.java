@@ -18,122 +18,65 @@ public class CommandListener implements CommandExecutor {
 		plugin = instance;
 		log = plugin.log;
 	}
-
+	
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equalsIgnoreCase("deathcount")) {
-			if (sender instanceof Player) {
-				if (plugin.players.get((Player) sender) == null) {
-					Player p = (Player) sender;
-					plugin.players.put(p, new DeathPlayer(plugin, p.getName()));
-				}
-			}
-			if (sender.hasPermission("deathcounter.users")) {
-				int loops = plugin.config.getInt("settings.leaderboards", 5);
-				if (args.length >= 2) {
-					loops = Integer.parseInt(args[1]);
-				}
-				if (loops == 0) { return false; }
-				loops = (loops <= 10) ? loops : 10;
-				if (args.length == 0) {
-					if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
-						plugin.leaders.fetchYaml(sender, "leaders", loops);
-						return true;
-					} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
-						plugin.leaders.fetchSqlite(sender, "leaders", loops);
-						return true;
-					} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
-						plugin.leaders.fetchMysql(sender, "leaders", loops);
-						return true;
-					} else {
-						log.warn(ChatColor.RED + "What storage type are you using?");
-						return true;
-					}
-				} else if (args.length >= 1) {
-					if (args[0].equalsIgnoreCase("leaders")) {
-						// Set up the maximum loops, and make sure the player doesn't specify something too high
-						if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
-							plugin.leaders.fetchYaml(sender, "leaders", loops);
-							return true;
-						} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
-							plugin.leaders.fetchSqlite(sender, "leaders", loops);
-							return true;
-						} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
-							plugin.leaders.fetchMysql(sender, "leaders", loops);
-							return true;
-						} else {
-							log.warn(ChatColor.RED + "What storage type are you using?");
-							return true;
-						}
-					} else if (plugin.monsters.contains(args[0].toLowerCase())) {
-						// Set up the maximum loops, and make sure the player doesn't specify something too high
-						if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
-							plugin.leaders.fetchYaml(sender, args[0].toLowerCase(), loops);
-							return true;
-						} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
-							plugin.leaders.fetchSqlite(sender, args[0].toLowerCase(), loops);
-							return true;
-						} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
-							plugin.leaders.fetchMysql(sender, args[0].toLowerCase(), loops);
-							return true;
-						} else {
-							log.warn(ChatColor.RED + "What storage type are you using?");
-							return true;
-						}
-					} else if (args[0].equals("reset")) {
-						if (args.length >= 2) {
-							// Check if permissions exist for this user
-							if (sender.hasPermission("deathcounter.admins")) {
-								if (plugin.getServer().getPlayer(args[1]) != null) {
-									Player player = plugin.getServer().getPlayer(args[1]);
-									if (player.getName().equalsIgnoreCase(args[1])) {
-										if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("yaml")) {
-											plugin.leaders.deleteYaml(args[1]);
-											return true;
-										} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("sqlite")) {
-											plugin.leaders.deleteSqlite(args[1]);
-											return true;
-										} else if (plugin.config.getString("settings.storage.type", "yaml").equalsIgnoreCase("mysql")) {
-											plugin.leaders.deleteMysql(args[1]);
-											return true;
-										} else {
-											log.warn(ChatColor.RED + "What storage type are you using?");
-											return true;
-										}
-									} else {
-										sender.sendMessage(ChatColor.RED + "You must enter the player's name exactly.");
-										return true;
-									}
-								} else {
-									log.warn("Player " + args[1] + " not found.");
-									return true;
-								}
-							} else {
-								// Player doesn't have permission for 'reset'
-								sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
-								return true;
-							}
-						} else {
-							// Invalid number of arguments
-							sender.sendMessage(ChatColor.RED + "Invalid number of arguments.");
-							return true;
-						}
-					} else {
-						// The specified argument had no handler
-						sender.sendMessage(ChatColor.RED + "An option for " + args[0] + " could not be found.");
-						return true;
-					}
-				} else {
-					// Invalid number of arguments
-					sender.sendMessage(ChatColor.RED + "Invalid number of arguments.");
-					return true;
-				}
-			} else {
-				// Player has no permissions
-				sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
-				return true;
+		if (!sender.hasPermission("deathcounter.users")) {
+			// Player has no permissions
+			sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
+			return true;
+		}
+		
+		if (sender instanceof Player) {
+			if (plugin.players.get((Player) sender) == null) {
+				Player p = (Player) sender;
+				plugin.players.put(p, new DeathPlayer(plugin, p.getName()));
 			}
 		}
+		
+		// Set up the maximum loops, and make sure the player doesn't specify something too high
+		int loops = Math.min(args.length >= 2 && args[1].matches("[1-9](?:[0-9]+)?") ? Integer.parseInt(args[1]) : plugin.config.getInt("settings.leaderboards", 5), 10);
+		if (loops < 1) loops = 1;
+		
+		// default request if no args or 1st arg is 'leaders'
+		String field = "total";
+		
+		if (args.length > 0 && !args[0].equalsIgnoreCase("leaders")) {
+			if (args[0].equalsIgnoreCase("reset")) {
+				if (args.length < 2) {
+					// Invalid number of arguments
+					sender.sendMessage(ChatColor.RED + "Invalid number of arguments.");
+				}
+				else if (!sender.hasPermission("deathcounter.admins")) {
+					// Player doesn't have permission for 'reset'
+					sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
+				}
+				else {
+					Player player = plugin.getServer().getPlayer(args[1]);
+					if (player == null || !player.getName().equalsIgnoreCase(args[1])) {
+						// unable to find exact player name online	
+						sender.sendMessage(ChatColor.RED + "Player " + args[1] + " was not found. You must enter an online player's name exactly.");
+					}
+					else {
+						plugin.leaders.delete(player.getName());
+						sender.sendMessage(ChatColor.GREEN + "Player " + player.getName() + "'s counter was reset.");
+					}
+				}
+				
+				return true;
+			}
+			
+			if (!args[0].matches("@.+") && !plugin.monsters.contains(args[0].toLowerCase())) {
+				// The specified argument had no handler
+				sender.sendMessage(ChatColor.RED + "An option for " + args[0] + " could not be found.");
+				return true;
+			}
+			
+			// got a monster!
+			field = args[0].toLowerCase();
+		}
+		
+		plugin.leaders.fetch(sender, field, loops);
+		
 		return true;
 	}
-
 }
