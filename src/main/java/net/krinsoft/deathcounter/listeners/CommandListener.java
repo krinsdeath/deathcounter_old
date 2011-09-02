@@ -80,7 +80,7 @@ public class CommandListener implements CommandExecutor {
 			field = args[0];
 		}
 		// let's find the stats!
-		plugin.leaders.fetch(sender, field, loops);
+		plugin.leaders.fetch(sender, field.toLowerCase(), loops);
 		return true;
 	}
 }

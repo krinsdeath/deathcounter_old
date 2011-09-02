@@ -6,8 +6,8 @@ Count and rank your player and monster kills in Minecraft, and use a convenient 
 
 Version 0.4
 ---
-*   Merged pull request from @ltguide
-*   Made *\@name* searching case-insensitive, both in YAML and SQLite
+*   Merged pull request from **ltguide**
+*   Made *@name* searching case-insensitive, both in YAML and SQLite
 
 Version 0.3.2
 ---

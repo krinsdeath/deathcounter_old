@@ -45,16 +45,15 @@ public class Leaderboards {
 	}
 
 	private void fetchYaml(CommandSender sender, String field, int loops) {
-		String f = field.toLowerCase();
-		if (field.equalsIgnoreCase("total") || plugin.monsters.contains(f)) {
+		if (field.equalsIgnoreCase("total") || plugin.monsters.contains(field)) {
 			LinkedList<String> names = new LinkedList<String>();
 			LinkedList<Integer> counts = new LinkedList<Integer>();
 
 			int minCount = 0;
 			for (String key : plugin.users.getKeys()) {
-				int count = plugin.users.getInt(key + "." + f, 0);
+				int count = plugin.users.getInt(key + "." + field, 0);
 
-				// has kills and (more kills than the lowest or there's room for a tie) 
+				// has kills and (more kills than the lowest or there's room for a tie)
 				if (count > 0 && (count > minCount || (count == minCount && counts.size() < loops))) {
 					int index;
 					for (index = 0; index < counts.size(); index++) {
@@ -170,7 +169,7 @@ public class Leaderboards {
 				ordinal = "third";
 			}
 
-			msg = plugin.config.getString("messages." + ordinal + "_rank", "#<rank> - <name> (<kills>)");
+			msg = plugin.config.getString("messages." + ordinal + "._rank", "#<rank> - <name> (<kills>)");
 		}
 
 		msg = msg.replaceAll("<rank>", Integer.toString(rank));

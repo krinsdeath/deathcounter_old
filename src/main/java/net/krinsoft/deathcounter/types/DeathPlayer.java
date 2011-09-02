@@ -486,6 +486,25 @@ public class DeathPlayer implements IDatabase {
 
 	@Override
 	public String toString() {
-		return "DeathPlayer{name=" + name + "}";
+        StringBuilder to = new StringBuilder("DeathPlayer{");
+        to.append("name=").append(name).append(",");
+        to.append("total=").append(total).append("}@").append(this.hashCode());
+		return to.toString();
 	}
+
+    @Override
+    public int hashCode() {
+        int hash = 19;
+        hash = 51 * hash + total;
+        hash = 51 * hash + (name == null ? 0 : name.hashCode());
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object aThat) {
+        if (this == aThat) { return true; }
+        if (aThat == null || aThat.getClass() != this.getClass()) { return false; }
+        DeathPlayer that = (DeathPlayer) aThat;
+        return (that.hashCode() == this.hashCode() && that.toString().equals(this.toString()));
+    }
 }
