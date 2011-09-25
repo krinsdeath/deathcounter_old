@@ -1,3 +1,20 @@
+Version 0.3.2
+---
+*   Refactored Register to prevent conflicts
+
+Version 0.3.1
+---
+*   Switched from iConomy to register; all major economies will now work, including Essentials Economy, iConomy 4 & 5, BOSEconomy 6 and 7, and Multi-currency
+*   Code cleanup
+
+Version 0.3.0
+---
+*   Converted to Superperms
+*   Optimized code
+*   Fixed possible nullpointers with default values
+*   Added aliases for /deathcount - /dc and /deathcounter
+*   Converted to maven
+
 Version 0.2.2
 ---
 *   Added iConomy support! (optional)

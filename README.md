@@ -1,28 +1,16 @@
-DeathCounter v0.4
+DeathCounter v1.0
 ===
 Count and rank your player and monster kills in Minecraft, and use a convenient command (*/deathcount* or */dc*) to display leaders.
 
 *   by **krinsdeath**
 
-Version 0.4
+Version 1.0.3 b8
 ---
-*   Merged pull request from **ltguide**
-*   Made *@name* searching case-insensitive, both in YAML and SQLite
+*   Fixed a lot of broken stuff. ([**commit**](https://github.com/krinsdeath/deathcounter/commit/d8d4e8ac55b6e2337c872a30a245631f81059fe3))
 
-Version 0.3.2
+Version 1.0 b1
 ---
-*   Refactored Register to prevent conflicts
-
-Version 0.3.1
----
-*   Switched from iConomy to register; all major economies will now work, including Essentials Economy, iConomy 4 & 5, BOSEconomy 6 and 7, and Multi-currency
-*   Code cleanup
-
-Version 0.3.0
----
-*   Converted to Superperms
-*   Optimized code
-*   Fixed possible nullpointers with default values
-*   Added aliases for /deathcount - /dc and /deathcounter
-*   Converted to maven
-
+*   Removed Register in favor of AllPay v3.0
+*   iConomy 4/5/6, MultiCurrency, RealEconomy, Essentials Eco, BOSEconomy 6 and 7, and a generic Item Bank all supported.
+*   Factored pull request from @ltguide to include @[playername] functionality in searches.
+*   Moved plugin to load: startup to ensure economy hooking.
