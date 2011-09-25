@@ -3,11 +3,17 @@
     <groupId>net.krinsoft</groupId>
     <artifactId>deathcounter</artifactId>
     <name>DeathCounter</name>
-    <version>1.0</version>
+    <version>1.0.3</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.number>b1</project.build.number>
+        <project.build.number>b8</project.build.number>
     </properties>
+	<repositories>
+		<repository>
+			<id>OnARandomBox</id>
+			<url>http://repo.onarandombox.com/artifactory/repo</url>
+		</repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>
@@ -18,6 +24,25 @@
                     <source>1.5</source>
                     <target>1.5</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-wsdl-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${basedir}/lib/allpay/src</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <resources>
@@ -33,47 +58,64 @@
         </resources>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
+        <!-- Bukkit Dependency -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
+        <!-- End Bukkit -->
+		<!-- Start of Economy Dependencies -->
         <dependency>
-            <groupId>cosine</groupId>
-            <artifactId>boseconomy</artifactId>
-            <version>7</version>
+            <groupId>cosine.boseconomy</groupId>
+            <artifactId>BOSEconomy</artifactId>
+            <version>0.6.2</version>
             <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.nijiko</groupId>
-            <artifactId>ico5</artifactId>
-            <version>5</version>
+            <groupId>fr.crafter.tickleman.RealShop</groupId>
+            <artifactId>RealShop</artifactId>
+            <version>0.63</version>
             <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.nijiko</groupId>
-            <artifactId>ico4</artifactId>
-            <version>4</version>
+            <groupId>com.iCo6</groupId>
+            <artifactId>iConomy</artifactId>
+            <version>6.0</version>
             <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ess</groupId>
-            <artifactId>essentials</artifactId>
-            <version>2.5</version>
+            <groupId>com.iConomy</groupId>
+            <artifactId>iConomy</artifactId>
+            <version>5.0</version>
             <type>jar</type>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>multi</groupId>
-            <artifactId>currency</artifactId>
+            <groupId>com.nijiko.coelho.iConomy</groupId>
+            <artifactId>iConomy</artifactId>
+            <version>4.65</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.earth2me.essentials</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>2.4.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.ashtheking.currency</groupId>
+            <artifactId>MultiCurrency</artifactId>
             <version>0.09</version>
             <type>jar</type>
+            <scope>compile</scope>
         </dependency>
+		<!-- End of Economy Dependencies -->
     </dependencies>
 </project>
